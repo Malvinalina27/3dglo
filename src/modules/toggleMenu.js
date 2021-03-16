@@ -7,12 +7,22 @@ const toggleMenu = () => {
 
   document.body.addEventListener('click', e => {
     const target = e.target;
-    console.log(target);
-    if (target.classList.contains('close-btn') || target.closest('li>a') || target.closest('.menu')) {
+    // закрытие меню по нажатию вне его
+    if (!target.closest('menu') && menu.classList.contains('active-menu')) {
       handlerMenu();
-    } /* else if (target.tagName !== 'MENU') {
-      menu.classList.remove('active-menu');
-    } */
+    }
+    // закрытие/открытие меню по бургер-меню
+    if (target.closest('.menu')) {
+      handlerMenu();
+    }
+    //закрытие по крестику
+    if (target.classList.contains('close-btn')) {
+      handlerMenu();
+    }
+    //закрытие меню по нажатию на li
+    if (target.closest('li>a')) {
+      handlerMenu();
+    }
   });
 
 };
