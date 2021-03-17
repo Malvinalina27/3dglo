@@ -2,7 +2,7 @@ const togglePopUp = () => {
   const popup = document.querySelector('.popup');
   const popupBtn = document.querySelectorAll('.popup-btn');
   const popupContent = document.querySelector('.popup-content');
-  const width = document.documentElement.clientWidth; //ширина экрана
+  //const width = document.documentElement.clientWidth; //ширина экрана
 
   //animation popupContent
   function animate({ duration, timing, draw }) {
@@ -17,21 +17,37 @@ const togglePopUp = () => {
       }
     });
   }
-
   //click on popupBtn
   popupBtn.forEach(elem => {
     elem.addEventListener('click', () => {
+      const width = document.documentElement.clientWidth;
       popup.style.display = 'block';
       if (width < 768) {
-        cancelAnimationFrame(animate);
-      } else {
+        popup.style.display = 'block';
+      } else if (width > 768 && width <= 1280) {
         animate({
           duration: 500,
           timing(timeFraction) {
             return timeFraction;
           },
           draw(progress) {
+            popupContent.style.left = '0%';
+            popup.style.opacity = 0.1;
+            popupContent.style.left = progress * 34 + '%';
+            popup.style.opacity = progress * 1;
+          },
+        });
+      } else if (width > 1280) {
+        animate({
+          duration: 500,
+          timing(timeFraction) {
+            return timeFraction;
+          },
+          draw(progress) {
+            popupContent.style.left = '0%';
+            popup.style.opacity = 0.1;
             popupContent.style.left = progress * (width / 2.5) + 'px';
+            popup.style.opacity = progress * 1;
           },
         });
       }

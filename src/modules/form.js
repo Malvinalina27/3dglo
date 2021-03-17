@@ -36,7 +36,7 @@ const form = () => {
             regularValid();
             target.value = target.value
               .split(' ')
-              .map(word => word[0].toUpperCase() + word.substring(1))
+              .map(word => word[0].toUpperCase() + word.substring(1).toLowerCase())
               .join(' ');
             return true;
           }
@@ -46,21 +46,34 @@ const form = () => {
 
     email.forEach(item => {
       if (target === item) {
-        target.value = target.value.replace(/[^a-z@\-_.!~*']/gi, '');
+        if (target.value !== '') {
+          const pattern = /^[a-z0-9][a-z0-9\._-]*[a-z0-9]*@([a-z0-9]+([a-z0-9-]*[a-z0-9]+)*\.)+[a-z]+/i;
+          item.addEventListener('blur', () => {
+            if (target.value.search(pattern) === 0) {
+              alert('ВНИМАНИЕ! Введеный email адрес не соответствует общим стандартам.');
+            }
+          });
+        }
+        /* target.value = target.value.replace(/[^a-z@\-_.!~*']/gi, '');
         item.addEventListener('blur', () => {
           regularValid();
         },
         true
-        );
+        ); */
+        /* if (item.value.match(/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/)) {
+          item.style.border = '2px solid green';
+        } else {
+          item.style.border = '2px solid red';
+        } */
       }
     });
-
     phone.forEach(item => {
       if (target === item) {
         maskPhone('.form-phone'),
         true;
       }
     });
+
   });
 
   // маска для телефона
@@ -85,7 +98,7 @@ const form = () => {
       if (!reg.test(this.value) || this.value.length < 18 || keyCode > 47 && keyCode < 58) {
         this.value = newValue;
       }
-      if (event.type === "blur" && this.value.length < 13) {
+      if (event.type === "blur" && this.value.length < 18) {
         this.value = "";
       }
 
