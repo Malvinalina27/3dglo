@@ -46,25 +46,22 @@ const form = () => {
 
     email.forEach(item => {
       if (target === item) {
-        if (target.value !== '') {
-          const pattern = /^[a-z0-9][a-z0-9\._-]*[a-z0-9]*@([a-z0-9]+([a-z0-9-]*[a-z0-9]+)*\.)+[a-z]+/i;
-          item.addEventListener('blur', () => {
-            if (target.value.search(pattern) === 0) {
-              alert('ВНИМАНИЕ! Введеный email адрес не соответствует общим стандартам.');
+        target.value = target.value.replace(/[^a-z0-9\@\-_.!~*']/gi, "");
+        item.addEventListener(
+          "blur",
+          () => {
+            regularValid();
+            let reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+            if (reg.test(item.value) === false) {
+              target.placeholder = "Введите в формате mail@mail.com";
+              setTimeout(() => {
+                target.placeholder = "E-mail";
+              }, 3000);
+              target.value = "";
             }
-          });
-        }
-        /* target.value = target.value.replace(/[^a-z@\-_.!~*']/gi, '');
-        item.addEventListener('blur', () => {
-          regularValid();
-        },
-        true
-        ); */
-        /* if (item.value.match(/^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/)) {
-          item.style.border = '2px solid green';
-        } else {
-          item.style.border = '2px solid red';
-        } */
+          },
+          true
+        );
       }
     });
     phone.forEach(item => {
@@ -73,7 +70,6 @@ const form = () => {
         true;
       }
     });
-
   });
 
   // маска для телефона
